@@ -1,14 +1,42 @@
-    private static void createCell(Row row, int colNum, Object value) {
-        Cell cell = row.createCell(colNum);
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-        if (value instanceof String) {
-            cell.setCellValue((String) value);
-        } else if (value instanceof Integer) {
-            cell.setCellValue((Integer) value);
-        } else if (value instanceof Double) {
-            cell.setCellValue((Double) value);
+public class SearchEmployeeXml {
+    public static void main(String[] args) {
+        // Specify the path to your XML file
+        String filePath = "path/to/your/employees.xml";
+
+        // Specify the employee id to search
+        String targetEmployeeId = "1";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            StringBuilder xmlBlock = new StringBuilder();
+            boolean inEmployeeBlock = false;
+
+            while ((line = reader.readLine()) != null) {
+                // Check if the line contains the employee id
+                if (line.contains("<employee id=\"" + targetEmployeeId + "\">")) {
+                    inEmployeeBlock = true;
+                }
+
+                // Add the line to the xmlBlock if within the employee block
+                if (inEmployeeBlock) {
+                    xmlBlock.append(line).append(System.lineSeparator());
+
+                    // Check if the block ends
+                    if (line.contains("</employee>")) {
+                        inEmployeeBlock = false;
+                        System.out.println(xmlBlock.toString());
+                        xmlBlock.setLength(0);  // Reset the StringBuilder
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        // Add more type checks as needed
-
-        // You can apply additional formatting or cell styles here if needed
     }
+}
