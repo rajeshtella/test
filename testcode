@@ -1,0 +1,14 @@
+    private static void createCell(Row row, int colNum, Object value) {
+        Cell cell = row.createCell(colNum);
+
+        if (value instanceof String) {
+            cell.setCellValue((String) value);
+        } else if (value instanceof Integer) {
+            cell.setCellValue((Integer) value);
+        } else if (value instanceof Double) {
+            cell.setCellValue((Double) value);
+        }
+        // Add more type checks as needed
+
+        // You can apply additional formatting or cell styles here if needed
+    }
